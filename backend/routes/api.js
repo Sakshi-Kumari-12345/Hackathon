@@ -4,6 +4,7 @@ import { analyzeContent } from '../services/aiService.js';
 import { extractTextFromUrl, extractTextFromPdf } from '../services/scraperService.js';
 import { fetchLiveNews } from '../services/newsService.js';
 import Analysis from '../models/Analysis.js';
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -66,6 +67,11 @@ router.post('/analyze', upload.single('file'), async (req, res) => {
 
 router.get('/history', async (req, res) => {
   try {
+    if (mongoose.connection.readyState !== 1) {
+      console.warn("DB disconnected. Skipping history fetch.");
+      return res.json({ history: [], stats: { total: 0, fake: 0, real: 0 } });
+    }
+
     const history = await Analysis.find().sort({ createdAt: -1 }).limit(20);
     
     // Calculate stats
