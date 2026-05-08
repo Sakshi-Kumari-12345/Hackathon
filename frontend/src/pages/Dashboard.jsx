@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Activity, ShieldAlert, ShieldCheck, FileSearch, TrendingUp } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.PROD ? '/api' : 'http://localhost:5000/api';
 
 export default function Dashboard() {
   const [data, setData] = useState(null);

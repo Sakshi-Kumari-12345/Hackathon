@@ -50,7 +50,11 @@ router.post('/analyze', upload.single('file'), async (req, res) => {
       trustedSources: analysisResult.trustedSources
     });
 
-    await newAnalysis.save();
+    try {
+      await newAnalysis.save();
+    } catch (dbError) {
+      console.warn("Could not save to DB (Continuing without saving):", dbError.message);
+    }
 
     res.json(newAnalysis);
 
@@ -78,8 +82,8 @@ router.get('/history', async (req, res) => {
       }
     });
   } catch (error) {
-    console.error("History Route Error:", error);
-    res.status(500).json({ error: 'Failed to fetch history' });
+    console.warn("History Route Error (DB likely disconnected):", error.message);
+    res.json({ history: [], stats: { total: 0, fake: 0, real: 0 } });
   }
 });
 
