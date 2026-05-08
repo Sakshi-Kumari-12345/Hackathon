@@ -1,0 +1,17 @@
+# Node dependencies
+node_modules/
+npm-debug.log
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build files
+frontend/dist/
+backend/build/
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store
